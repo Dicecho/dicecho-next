@@ -35,10 +35,9 @@ export async function generateMetadata({
 
 export default async function ScenarioDetail({
   params,
-  children,
-}: React.PropsWithChildren<{
+}: {
   params: { id: string };
-}>) {
+}) {
   const mod = await api.module.detail(params.id);
 
   return (
