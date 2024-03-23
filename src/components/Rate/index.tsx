@@ -16,7 +16,6 @@ export const Rate: FC<RateProps> = ({
   onChange,
   allowHalf = false,
   readOnly = onChange === undefined,
-  color = "orange-400",
   size = "md",
   allowClear = value === 0,
   className,
@@ -28,15 +27,25 @@ export const Rate: FC<RateProps> = ({
 
   return (
     <div
-      className={clsx(className, "rating", `rating-${size}`, {
+      className={clsx(className, "rating", {
         "rating-half": allowHalf,
+        "rating-xs": size === "xs",
+        "rating-lg": size === "lg",
+        "rating-sm": size === "sm",
+        "rating-md": size === "md",
       })}
       {...props}
     >
       {allowClear && (
-        <input readOnly type="radio" name={name} className="rating-hidden hidden" checked={score === 0} />
+        <input
+          readOnly
+          type="radio"
+          name={name}
+          className="rating-hidden hidden"
+          checked={score === 0}
+        />
       )}
-      {new Array(itemCount).fill('').map((_, index) => (
+      {new Array(itemCount).fill("").map((_, index) => (
         <input
           key={index}
           readOnly={readOnly}
@@ -45,9 +54,9 @@ export const Rate: FC<RateProps> = ({
           name={name}
           className={clsx(
             "mask mask-star",
-            `bg-${color}`,
+            `bg-warning`,
             { "mask-half-1": index % 2 === 0 && allowHalf },
-            { "mask-half-2": index % 2 === 1 && allowHalf },
+            { "mask-half-2": index % 2 === 1 && allowHalf }
           )}
         />
       ))}

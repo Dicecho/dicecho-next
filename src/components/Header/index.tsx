@@ -3,18 +3,15 @@ import clsx from "clsx";
 import { ComponentProps, FC, useState } from "react";
 import Link from "next/link";
 import Img from "next/image";
-import logo from './logo.png';
-import { toast } from "react-hot-toast";
+import logo from "./logo.png";
+import { ThemeChanger } from "@/components/theme/ThemeChanger";
 
 export type HeaderProps = ComponentProps<"div">;
 export const Header: FC<HeaderProps> = (props) => {
-
   return (
     <div
       {...props}
-      className={clsx(
-        "sticky top-0 left-0 right-0 z-10 bg-base-100 shadow-xl"
-      )}
+      className={clsx("sticky top-0 left-0 right-0 z-10 shadow-xl")}
     >
       <div className={clsx("container mx-auto navbar")}>
         <div className="navbar-start">
@@ -46,14 +43,12 @@ export const Header: FC<HeaderProps> = (props) => {
           </ul>
         </div>
 
-
+        {/* 
         <div className="navbar-center">
-          <></>
-        </div>
-        <div className="navbar-end">
-          <div className="btn btn-sm btn-primary">
-            Sign in
-          </div>
+        </div> */}
+        <div className="navbar-end gap-4">
+          <ThemeChanger />
+          <div className="btn btn-sm">Sign in</div>
         </div>
       </div>
       {/* <AccountModal

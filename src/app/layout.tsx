@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Layout } from "@/components/Layout";
 import { Header } from "@/components/Header";
 import { TailwindToaster } from "@/components/Toaster";
@@ -19,13 +20,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html data-theme="dim">
+    <html>
       <body className={inter.className}>
-        <Layout>
-          <Header />
-          {children}
-        </Layout>
-        <TailwindToaster position="top-center" />
+        <ThemeProvider
+          // defaultTheme="system"
+          // enableSystem
+          // disableTransitionOnChange
+        >
+          <Layout>
+            <Header />
+            {children}
+          </Layout>
+          <TailwindToaster position="top-center" />
+        </ThemeProvider>
       </body>
     </html>
   );
