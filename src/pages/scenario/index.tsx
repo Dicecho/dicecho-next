@@ -3,12 +3,20 @@ import { api } from "@/utils/api";
 import { ModListApiResponse } from "@dicecho/types";
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { RefreshCw } from 'lucide-react';
-import { ScenarioCard } from "./ScenarioCard";
-import { ScenarioList } from "./ScenarioList";
-import { ScenarioFilter } from "./ScenarioFilter";
+import { RefreshCw } from "lucide-react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { ScenarioList } from "@/components/Scenario/ScenarioList";
+import { ScenarioFilter } from "@/components/Scenario/ScenarioFilter";
 
-export default async function Scenario() {
+export const getServerSideProps: GetServerSideProps<{}> = async ({
+  locale,
+}) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "scenario"])),
+  },
+});
+
+export default function Scenario() {
   return (
     <div className="container mx-auto pt-4">
       <div className="grid grid-cols-6 gap-8">
@@ -26,8 +34,12 @@ export default async function Scenario() {
           <ScenarioList query={{ sort: { lastRateAt: -1 } }} />
         </div>
         <div className="hidden md:flex md:col-span-2 gap-4 flex-col">
-          <button className="btn btn-primary btn-block">Scenario Publish</button>
-          <button className="btn btn-primary btn-block">Commit Scenario page</button>
+          <button className="btn btn-primary btn-block">
+            Scenario Publish
+          </button>
+          <button className="btn btn-primary btn-block">
+            Commit Scenario page
+          </button>
 
           <div className="card sticky top-20">
             <div className="card-body">

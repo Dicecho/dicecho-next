@@ -1,8 +1,12 @@
-import type { Metadata } from "next";
+import type { GetServerSideProps, GetStaticPaths, GetStaticProps, Metadata, NextPage } from "next";
+// import initTranslations from '@/app/i18n';
 import { api } from "@/utils/api";
+import { IModDto } from "@dicecho/types";
+
 import { RateInfo } from "@/components/Scenario/RateInfo";
 import { ComponentProps, FC, PropsWithChildren } from "react";
 import clsx from "clsx";
+import { useTranslation } from "next-i18next";
 
 export async function generateMetadata({
   params,
@@ -48,12 +52,23 @@ const InfoItem: FC<
   );
 };
 
-export default async function ScenarioDetail({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const scenario = await api.module.detail(params.id);
+interface PageProps {
+  scenario: IModDto
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps, { id: string }> = async ({ params }) => {
+  const scenario = await api.module.detail(params!.id)
+  const props: PageProps = {
+    scenario,
+  }
+
+  return { props }
+}
+
+const ScenarioDetailPage: NextPage<PageProps> = ({
+  scenario
+}) => {
+  const { t } = useTranslation(['scenario'])
 
   return (
     <div>
@@ -65,9 +80,8 @@ export default async function ScenarioDetail({
         <div className="text-2xl font-bold mb-2">{scenario.title}</div>
         <div className="text-sm mb-2">
           <span className="opacity-60">
-            [此条目并非转载，引用的标题封面等基本信息仅用于交流、介绍和评论]——
+            [{t('quote_notice')}]
           </span>
-          <a className="text-primary">词条功能使用及规则</a>
         </div>
 
         <RateInfo
@@ -77,7 +91,7 @@ export default async function ScenarioDetail({
           info={scenario.rateInfo}
         />
 
-        <InfoItem title="原作者">
+        <InfoItem title={t('author')}>
           <div
             className="avatar"
           >
@@ -93,3 +107,5 @@ export default async function ScenarioDetail({
     </div>
   );
 }
+
+export default ScenarioDetailPage

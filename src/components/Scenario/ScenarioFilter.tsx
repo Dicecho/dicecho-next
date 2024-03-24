@@ -8,6 +8,7 @@ import clsx from "clsx";
 import useSWR from "swr";
 import { XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from 'next-i18next';
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -61,8 +62,8 @@ type FormData = {
   soryOrder: number;
 };
 
-const onSubmit = (data: FormData) => console.log(data);
 export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
+  const [t] = useTranslation(['scenario'])
   const { data: config } = useSWR(["scenario", "config"], api.module.config);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,13 +90,10 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select rule" />
+                    <SelectValue placeholder={t('select_rule')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={undefined as any as string}>
-                    Seleact a rule
-                  </SelectItem>
                   {config?.rules.map((rule) => (
                     <SelectItem key={rule._id} value={rule._id}>
                       {rule._id}({rule.count})
@@ -115,13 +113,10 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select language" />
+                    <SelectValue placeholder={t('select_languages')} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={undefined as any as string}>
-                    Seleact language
-                  </SelectItem>
                   {config?.languages.map((language) => (
                     <SelectItem key={language._id} value={language._id}>
                       {language._id}({language.count})
@@ -133,87 +128,8 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
             </FormItem>
           )}
         />
-
-        <div>
-
-          <FormField
-            control={form.control}
-            name="language"
-            render={({ field }) => (
-              <FormItem>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select language" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value={undefined as any as string}>
-                      Seleact language
-                    </SelectItem>
-                    {config?.languages.map((language) => (
-                      <SelectItem key={language._id} value={language._id}>
-                        {language._id}({language.count})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-        </div>
         <Button type="submit">Submit</Button>
       </form>
     </Form>
-  );
-
-  return (
-    <form className="flex flex-col gap-4">
-      {/* <MyCombobox /> */}
-
-      {/* <Select 
-        className="w-full"
-        placeholder="Please select"
-        mode="multiple"
-        allowClear
-        options={config?.rules.map((rule) => ({ label: rule._id, value: `${rule._id}(${rule.count})` }))}
-        {...register('rule')}
-      /> */}
-
-      {/* <select className="select select-bordered w-full" {...register("rule")}>
-        <option value={""} selected>
-          Select Rule
-        </option>
-        {config?.rules.map((rule) => (
-          <option key={rule._id} value={rule._id}>
-            {rule._id}({rule.count})
-          </option>
-        ))}
-      </select> */}
-
-      <select className="select select-bordered w-full">
-        <option disabled selected>
-          Select Language
-        </option>
-        {config?.languages.map((language) => (
-          <option key={language._id} value={language._id}>
-            {language._id}({language.count})
-          </option>
-        ))}
-      </select>
-
-      {/* <div className="join w-full">
-        <select className="select select-bordered join-item">
-          {SortKeys.map((sortKey) => (
-            <option key={sortKey} value={sortKey}>{sortKey}</option>
-          ))}
-        </select>
-        <button className="btn join-item">
-          hhh
-        </button>
-      </div> */}
-    </form>
   );
 }
