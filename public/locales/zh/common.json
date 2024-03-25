@@ -1,5 +1,11 @@
 {
   "scenario": "模组",
   "forum": "讨论区",
-  "replay": "视频"
+  "replay": "视频",
+  "sign_in": "登录",
+  "search": "搜索",
+  "filter": "筛选",
+  "refresh": "刷新",
+  "scenario_publish": "模组投稿",
+  "commit_scenario_page": "添加讨论词条"
 }

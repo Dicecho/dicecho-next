@@ -1,4 +1,10 @@
-import type { GetServerSideProps, GetStaticPaths, GetStaticProps, Metadata, NextPage } from "next";
+import type {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  Metadata,
+  NextPage,
+} from "next";
 // import initTranslations from '@/app/i18n';
 import { api } from "@/utils/api";
 import { IModDto } from "@dicecho/types";
@@ -7,6 +13,7 @@ import { RateInfo } from "@/components/Scenario/RateInfo";
 import { ComponentProps, FC, PropsWithChildren } from "react";
 import clsx from "clsx";
 import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export async function generateMetadata({
   params,
@@ -53,22 +60,24 @@ const InfoItem: FC<
 };
 
 interface PageProps {
-  scenario: IModDto
+  scenario: IModDto;
 }
 
-export const getServerSideProps: GetServerSideProps<PageProps, { id: string }> = async ({ params }) => {
-  const scenario = await api.module.detail(params!.id)
+export const getServerSideProps: GetServerSideProps<
+  PageProps,
+  { id: string }
+> = async ({ params, locale }) => {
+  const scenario = await api.module.detail(params!.id);
   const props: PageProps = {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "scenario"])),
     scenario,
-  }
+  };
 
-  return { props }
-}
+  return { props };
+};
 
-const ScenarioDetailPage: NextPage<PageProps> = ({
-  scenario
-}) => {
-  const { t } = useTranslation(['scenario'])
+const ScenarioDetailPage: NextPage<PageProps> = ({ scenario }) => {
+  const { t } = useTranslation(["scenario"]);
 
   return (
     <div>
@@ -79,9 +88,7 @@ const ScenarioDetailPage: NextPage<PageProps> = ({
       <div className="card p-4 mt-[-16px] bg-base-100">
         <div className="text-2xl font-bold mb-2">{scenario.title}</div>
         <div className="text-sm mb-2">
-          <span className="opacity-60">
-            [{t('quote_notice')}]
-          </span>
+          <span className="opacity-60">[{t("quote_notice")}]</span>
         </div>
 
         <RateInfo
@@ -91,10 +98,8 @@ const ScenarioDetailPage: NextPage<PageProps> = ({
           info={scenario.rateInfo}
         />
 
-        <InfoItem title={t('author')}>
-          <div
-            className="avatar"
-          >
+        <InfoItem title={t("author")}>
+          <div className="avatar">
             <img
               className="w-4 h-4"
               src={scenario.author.avatarUrl}
@@ -106,6 +111,6 @@ const ScenarioDetailPage: NextPage<PageProps> = ({
       </div>
     </div>
   );
-}
+};
 
-export default ScenarioDetailPage
+export default ScenarioDetailPage;

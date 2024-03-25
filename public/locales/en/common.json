@@ -1,5 +1,11 @@
 {
   "scenario": "scenario",
   "forum": "forum",
-  "replay": "replay"
+  "replay": "replay",
+  "sign_in": "sign in",
+  "search": "search",
+  "filter": "filter",
+  "refresh": "refresh",
+  "scenario_publish": "scenario publish",
+  "commit_scenario_page": "commit scenario page"
 }

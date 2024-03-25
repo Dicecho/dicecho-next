@@ -1,5 +1,11 @@
 {
   "scenario": "シナリオ",
   "forum": "フォーラム",
-  "replay": "リプレイ"
+  "replay": "リプレイ",
+  "sign_in": "登録",
+  "search": "検索",
+  "filter": "濾過器",
+  "refresh": "更新",
+  "scenario_publish": "シナリオ投稿",
+  "commit_scenario_page": "コミットシナリオのページ"
 }

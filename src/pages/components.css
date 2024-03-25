@@ -1,0 +1,16 @@
+.divider {
+  @apply flex flex-row items-center self-stretch my-4 h-4 whitespace-nowrap;
+}
+.divider:before,
+.divider:after {
+  @apply h-px w-full flex-grow content-[''] bg-foreground/10;
+}
+.divider-start:before {
+  @apply hidden;
+}
+.divider-end:after {
+  @apply hidden;
+}
+.divider:not(:empty) {
+  @apply gap-4;
+}

@@ -2,5 +2,6 @@
   "select_rule": "应用规则",
   "select_languages": "选择语言",
   "quote_notice": "此条目并非转载，引用的标题封面等基本信息仅用于交流、介绍和评论",
-  "author": "作者"
+  "author": "作者",
+  "scenario_search_placeholder": "输入名称 / 介绍 / 作者来搜索模组" 
 }

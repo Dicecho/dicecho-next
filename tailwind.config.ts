@@ -73,7 +73,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("daisyui")],
+  plugins: [require("tailwindcss-animate"), require("tailwindcss/nesting")],
 } satisfies Config;
 
 export default config;

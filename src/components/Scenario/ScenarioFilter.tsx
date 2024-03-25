@@ -128,7 +128,6 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );
