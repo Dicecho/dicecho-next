@@ -20,11 +20,11 @@ import { useTranslation } from "next-i18next";
 
 interface ScenarioListProps extends ComponentProps<"div"> {
   query?: Partial<IModListQuery>;
-  // scenarios: IModDto[]
+  scenarios?: IModDto[];
 }
 
 export const ScenarioList: FC<ScenarioListProps> = ({
-  // scenarios: initialScenarios,
+  scenarios: initialScenarios = [],
   query = {},
   className,
   ...props
@@ -55,6 +55,11 @@ export const ScenarioList: FC<ScenarioListProps> = ({
         className={clsx("grid grid-cols-2 md:grid-cols-4 gap-8", className)}
         {...props}
       >
+        {initialScenarios.map((scenario) => (
+          <Link href={`/scenario/${scenario._id}`} passHref key={scenario._id}>
+            <ScenarioCard scenario={scenario} />
+          </Link>
+        ))}
         {data?.map((page) =>
           page.data.map((scenario) => (
             <Link

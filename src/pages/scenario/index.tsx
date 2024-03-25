@@ -1,27 +1,20 @@
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { api } from "@/utils/api";
 import { IModListQuery, ModSortKey } from "@dicecho/types";
-import { Suspense, useState } from "react";
-import Link from "next/link";
-import { RefreshCw, Upload, Plus } from "lucide-react";
+import { useState } from "react";
+import { Upload, Plus } from "lucide-react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { ScenarioList } from "@/components/Scenario/ScenarioList";
-import { useTranslation } from "next-i18next";
+import { useTranslation, Trans } from "next-i18next";
 import {
   ScenarioFilter,
   FormData as ScenarioFilterData,
 } from "@/components/Scenario/ScenarioFilter";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 
 export const getServerSideProps: GetServerSideProps<{}> = async ({
   locale,
@@ -72,10 +65,15 @@ function filterToQuery(data: ScenarioFilterData): Partial<IModListQuery> {
 }
 
 export default function Scenario() {
-  const [t] = useTranslation(["common", "scenario"]);
+  const [t, i18n] = useTranslation(["common", "scenario"]);
   const { push } = useRouter();
   const [query, setQuery] = useState<Partial<IModListQuery>>(DEFAULT_QUERY);
   const [searchText, setSearchText] = useState("");
+
+  const { data: initialScenarios, isLoading } = useSWR(
+    [`scenarios`, query],
+    ([_, query]) => api.module.list({ ...query })
+  );
 
   const handleQueryChange = (query: Partial<IModListQuery>) => {
     // todo: save setting to localstorage
@@ -111,9 +109,23 @@ export default function Scenario() {
               {t("search")}
             </Button>
           </div>
-
-          <div className="divider" />
-
+          <div className="text-sm opacity-60 mt-2 flex items-center">
+            <Trans
+              i18nKey="search_result"
+              t={t}
+              values={{
+                count: initialScenarios?.totalCount ?? "",
+              }}
+              components={{
+                loading: isLoading ? (
+                  <span className="loading loading-spinner loading-xs mr-2" />
+                ) : (
+                  <></>
+                ),
+              }}
+            />
+          </div>
+          <div className="divider !mt-0" />
           <ScenarioList query={query} />
         </div>
         <div className="hidden md:flex md:col-span-2 gap-4 flex-col">
@@ -136,8 +148,11 @@ export default function Scenario() {
                 initialFilter={queryToFilter(query)}
                 onChange={(data) => handleQueryChange(filterToQuery(data))}
               />
-              <Button className="w-full mt-4 capitalize" onClick={() => handleRandom()}>
-                {t('random_scenario')}
+              <Button
+                className="w-full mt-4 capitalize"
+                onClick={() => handleRandom()}
+              >
+                {t("random_scenario")}
               </Button>
             </CardContent>
           </Card>

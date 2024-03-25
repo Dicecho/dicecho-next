@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { IModListQuery, ModSortKey, SortOrder } from "@dicecho/types";
-import { LanguageCodes, LanguageCodes_MAP } from "@/utils/language";
+import { LanguageCodes, LanguageCodeMap } from "@/utils/language";
 import { api } from "@/utils/api";
 import clsx from "clsx";
 import useSWR from "swr";
@@ -152,7 +152,7 @@ export function ScenarioFilter({
                 <SelectContent>
                   {config?.languages.map((language) => (
                     <SelectItem key={language._id} value={language._id}>
-                      {LanguageCodes_MAP[language._id as LanguageCodes]}(
+                      {LanguageCodeMap[i18n.language][language._id as LanguageCodes]}(
                       {language.count})
                     </SelectItem>
                   ))}
@@ -169,13 +169,13 @@ export function ScenarioFilter({
             render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger className="join-item">
+                  <SelectTrigger className="join-item capitalize">
                     <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {SortKeys.map((key) => (
-                    <SelectItem key={key} value={key}>
+                    <SelectItem key={key} value={key} className="capitalize">
                       {ModSortKeyMap[i18n.language][key]}
                     </SelectItem>
                   ))}
