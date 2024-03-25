@@ -1,4 +1,14 @@
+import type { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Image from "next/image";
+
+export const getServerSideProps: GetServerSideProps<{}> = async ({
+  locale,
+}) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "en", ["common", "scenario"])),
+  },
+});
 
 export default function Home() {
   return (
