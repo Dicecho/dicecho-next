@@ -17,6 +17,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
 
 export type HeaderProps = ComponentProps<"div">;
 export const Header: FC<HeaderProps> = (props) => {
@@ -76,10 +77,10 @@ export const Header: FC<HeaderProps> = (props) => {
           {/* 
         <div className="navbar-center">
         </div> */}
-          <div className="w-1/2 justify-end flex gap-4 capitalize">
+          <div className="w-1/2 justify-end flex gap-4 capitalize items-center">
             <LanguageChanger />
             <ThemeChanger />
-            <div className="btn btn-sm">{t("sign_in")}</div>
+            <Button size="sm">{t("sign_in")}</Button>
           </div>
         </div>
       </div>

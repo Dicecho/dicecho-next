@@ -22,6 +22,7 @@ class DicechoApi extends APIClient {
       this.get<ModListApiResponse>(`/api/mod?${qs.stringify(params)}`),
     detail: (id: string) => this.get<ModRetrieveApiResponse>(`/api/mod/${id}`),
     config: () => this.get<ModFilterConfig>(`/api/mod/config`),
+    random: (params: Partial<IModListQuery> = {}) => this.get<ModRetrieveApiResponse>(`/api/mod/random?${qs.stringify(params)}`),
     // create: (data: TokenCreateData) =>
     //   this.post<TokenCreateData, ServerTransaction>('/token', data),
     // update: (typeId: string, data: TokenUpdateData) =>

@@ -1,15 +1,16 @@
 "use client";
-import React from "react";
-import Img from "next/image";
+import React, { useEffect } from "react";
 import { IModListQuery, ModSortKey, SortOrder } from "@dicecho/types";
+import { LanguageCodes, LanguageCodes_MAP } from "@/utils/language";
 import { api } from "@/utils/api";
-import { Rate } from "@/components/Rate";
 import clsx from "clsx";
 import useSWR from "swr";
-import { XCircle } from "lucide-react";
+import { ArrowUpNarrowWide, ArrowDownNarrowWide } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-i18next";
 import { Input } from "@/components/ui/input";
+import { Toggle } from "@/components/ui/toggle";
+
 import {
   Select,
   SelectContent,
@@ -34,10 +35,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-interface ScenarioFilterProps {
-  initialQuery?: Partial<IModListQuery>;
-}
-
 const SortKeys = [
   ModSortKey.RELEASE_DATE,
   ModSortKey.RATE_COUNT,
@@ -48,49 +45,85 @@ const SortKeys = [
   ModSortKey.UPDATED_AT,
 ] as const;
 
+export const ModSortKeyMap: { [lng: string]: Record<ModSortKey, string> } = {
+  zh: {
+    [ModSortKey.RATE_AVG]: "评分",
+    [ModSortKey.RATE_COUNT]: "评价人数",
+    [ModSortKey.RELEASE_DATE]: "发布时间",
+    [ModSortKey.LAST_RATE_AT]: "最后评价时间",
+    [ModSortKey.LAST_EDIT_AT]: "最后编辑时间",
+    [ModSortKey.CREATED_AT]: "创建时间",
+    [ModSortKey.UPDATED_AT]: "更新时间",
+  },
+  en: {
+    [ModSortKey.RATE_AVG]: "average rating",
+    [ModSortKey.RATE_COUNT]: "rating count",
+    [ModSortKey.RELEASE_DATE]: "release date",
+    [ModSortKey.LAST_RATE_AT]: "last rate at",
+    [ModSortKey.LAST_EDIT_AT]: "last edit at",
+    [ModSortKey.CREATED_AT]: "created at",
+    [ModSortKey.UPDATED_AT]: "updated at",
+  },
+  jp: {
+    [ModSortKey.RATE_AVG]: "平均評価",
+    [ModSortKey.RATE_COUNT]: "評価数",
+    [ModSortKey.RELEASE_DATE]: "発売日",
+    [ModSortKey.LAST_RATE_AT]: "最終評価時間",
+    [ModSortKey.LAST_EDIT_AT]: "最終編集時間",
+    [ModSortKey.CREATED_AT]: "作成時間",
+    [ModSortKey.UPDATED_AT]: "更新時間",
+  },
+};
+
 const formSchema = z.object({
   rule: z.string().optional(),
   language: z.string().optional(),
   sortKey: z.enum(SortKeys).optional(),
-  sortOrder: z.nativeEnum(SortOrder).optional(),
+  sortOrder: z.number().optional(),
 });
 
-type FormData = {
-  rule: string;
-  language: string;
-  sortKey: string;
-  soryOrder: number;
-};
+export type FormData = z.infer<typeof formSchema>;
 
-export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
-  const [t] = useTranslation(['scenario'])
+interface ScenarioFilterProps {
+  initialFilter?: Partial<FormData>;
+  onChange?: (filter: FormData) => void;
+}
+
+export function ScenarioFilter({
+  initialFilter = {},
+  onChange = () => {},
+}: ScenarioFilterProps) {
+  const [t, i18n] = useTranslation(["scenario", "common"]);
   const { data: config } = useSWR(["scenario", "config"], api.module.config);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       sortKey: ModSortKey.LAST_RATE_AT,
       sortOrder: SortOrder.DESC,
+      ...initialFilter,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  useEffect(() => {
+    const { unsubscribe } = form.watch((values) => {
+      onChange(values);
+    });
+
+    return () => unsubscribe();
+  }, [form, onChange]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-4">
         <FormField
           control={form.control}
           name="rule"
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t('select_rule')} />
+                  <SelectTrigger allowClear>
+                    <SelectValue placeholder={t("select_rule")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -110,16 +143,17 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
           name="language"
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t('select_languages')} />
+                  <SelectTrigger allowClear>
+                    <SelectValue placeholder={t("select_languages")} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   {config?.languages.map((language) => (
                     <SelectItem key={language._id} value={language._id}>
-                      {language._id}({language.count})
+                      {LanguageCodes_MAP[language._id as LanguageCodes]}(
+                      {language.count})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -128,6 +162,68 @@ export function ScenarioFilter({ initialQuery }: ScenarioFilterProps) {
             </FormItem>
           )}
         />
+        <div className="join w-full">
+          <FormField
+            control={form.control}
+            name="sortKey"
+            render={({ field }) => (
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger className="join-item">
+                    <SelectValue />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {SortKeys.map((key) => (
+                    <SelectItem key={key} value={key}>
+                      {ModSortKeyMap[i18n.language][key]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="sortOrder"
+            render={({ field }) => (
+              <Button
+                variant="outline"
+                className="join-item px-2"
+                type="button"
+                onClick={() => {
+                  field.onChange(
+                    field.value === SortOrder.DESC
+                      ? SortOrder.ASC
+                      : SortOrder.DESC
+                  );
+                }}
+              >
+                {field.value === SortOrder.DESC ? (
+                  <ArrowDownNarrowWide size={16} />
+                ) : (
+                  <ArrowUpNarrowWide size={16} />
+                )}
+              </Button>
+            )}
+          />
+        </div>
+        <Button
+          className="w-full capitalize"
+          variant="destructive"
+          type="button"
+          onClick={() =>
+            form.reset({
+              rule: "",
+              language: "",
+              sortKey: ModSortKey.LAST_RATE_AT,
+              sortOrder: SortOrder.DESC,
+            })
+          }
+        >
+          {t("reset_filter", { ns: "common" })}
+        </Button>
       </form>
     </Form>
   );

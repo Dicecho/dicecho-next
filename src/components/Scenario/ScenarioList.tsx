@@ -16,6 +16,7 @@ import { useInView, IntersectionOptions } from "react-intersection-observer";
 
 import clsx from "clsx";
 import qs from "qs";
+import { useTranslation } from "next-i18next";
 
 interface ScenarioListProps extends ComponentProps<"div"> {
   query?: Partial<IModListQuery>;
@@ -28,6 +29,7 @@ export const ScenarioList: FC<ScenarioListProps> = ({
   className,
   ...props
 }) => {
+  const [t] = useTranslation(["common"]);
   const { ref, inView } = useInView();
 
   const { data, isLoading, setSize } = useSWRInfinite(
@@ -66,7 +68,9 @@ export const ScenarioList: FC<ScenarioListProps> = ({
         )}
       </div>
 
-      <div ref={ref}>Load More</div>
+      <div className="capitalize" ref={ref}>
+        {t("load_more")}
+      </div>
     </>
   );
 };

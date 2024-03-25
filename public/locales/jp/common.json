@@ -5,7 +5,10 @@
   "sign_in": "登録",
   "search": "検索",
   "filter": "濾過器",
+  "reset_filter": "初期化濾過器",
+  "random_scenario": "周りを見てごらん",
   "refresh": "更新",
+  "load_more": "ロードモア",
   "scenario_publish": "シナリオ投稿",
   "commit_scenario_page": "コミットシナリオのページ"
 }

@@ -33,6 +33,7 @@ export const Rate: FC<RateProps> = ({
         "rating-lg": size === "lg",
         "rating-sm": size === "sm",
         "rating-md": size === "md",
+        "rating-read-only": readOnly,
       })}
       {...props}
     >

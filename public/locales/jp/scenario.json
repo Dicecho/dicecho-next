@@ -3,5 +3,6 @@
   "select_languages": "言語を選択",
   "quote_notice": "このページは複製物ではなく、タイトルや表紙などの基本情報は、コミュニケーション、プレゼンテーション、コメントのためにのみ引用しています",
   "author": "作者",
-  "scenario_search_placeholder": "シナリオ名、説明、作者などを入力して検索する。"
+  "scenario_search_placeholder": "シナリオ名、説明、作者などを入力して検索する。",
+  "no_review_yet": "評価なし"
 }

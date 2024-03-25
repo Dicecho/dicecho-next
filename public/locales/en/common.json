@@ -5,7 +5,10 @@
   "sign_in": "sign in",
   "search": "search",
   "filter": "filter",
+  "reset_filter": "reset filter",
+  "random_scenario": "look around",
   "refresh": "refresh",
+  "load_more": "load more",
   "scenario_publish": "scenario publish",
   "commit_scenario_page": "commit scenario page"
 }

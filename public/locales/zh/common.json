@@ -5,7 +5,10 @@
   "sign_in": "登录",
   "search": "搜索",
   "filter": "筛选",
+  "reset_filter": "重置筛选",
+  "random_scenario": "随便看看",
   "refresh": "刷新",
+  "load_more": "加载更多",
   "scenario_publish": "模组投稿",
   "commit_scenario_page": "添加讨论词条"
 }

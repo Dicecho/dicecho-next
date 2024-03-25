@@ -2,14 +2,18 @@ import React from "react";
 import Img from "next/image";
 import { IModDto } from "@dicecho/types";
 import { RandomAvatar } from "react-random-avatars";
-import { Rate } from "@/components/Rate";
+import { Rate } from "@/components/ui/rate";
 import clsx from "clsx";
+import { useTranslation } from "next-i18next";
+import Image from "next/image";
 
 interface ScenarioCardProps {
   scenario: IModDto;
 }
 
 export function ScenarioCard({ scenario }: ScenarioCardProps) {
+  const [t] = useTranslation(["scenario"]);
+
   return (
     <div className="card group">
       <div className="flex aspect-[3/4] relative rounded-xl overflow-hidden mb-2">
@@ -23,11 +27,13 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
       <p className="text-nowrap truncate">{scenario.title}</p>
 
       <div className="flex items-center">
-        <div className="avatar mr-2">
-          <div className="w-4 rounded-xl">
+        <div className="mr-2">
+          <div className="w-4 rounded-xl overflow-hidden">
             {scenario.author.avatarUrl ? (
-              <img
+              <Image
                 className="w-4 h-4"
+                width={16}
+                height={16}
                 src={scenario.author.avatarUrl}
                 alt={scenario.author.nickName}
               />
@@ -43,7 +49,7 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
 
       <div className="w-full flex items-center">
         {scenario.rateAvg === 0 ? (
-          <div className="text-sm opacity-60">no review yet</div>
+          <div className="text-sm opacity-60">{t('no_review_yet')}</div>
         ) : (
           <>
             <Rate value={scenario.rateAvg} size="sm" allowHalf readOnly />

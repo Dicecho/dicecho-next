@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ComponentProps, FC } from "react";
-import { Rate } from "@/components/Rate";
-import { Progress } from "@/components/Progress";
+import { Rate } from "@/components/ui/rate";
+import { Progress } from "@/components/ui/progress";
 
 interface RateInfoProps extends ComponentProps<"div"> {
   score: number;
@@ -27,12 +27,22 @@ export const RateInfo: FC<RateInfoProps> = ({
           <div className="text-sm opacity-60">{count} 个评价</div>
         </div>
         <div className="flex-1 flex flex-col gap-1">
-          {Object.keys(info).map((key) => (
-            <div key={key} className="flex items-center gap-2">
-              <Rate className="[&>input]:w-3 [&>input]:h-3" value={parseInt(key)} readOnly size="sm" />
-              <Progress value={(info[key] / count) * 100} color="bg-warning" />
-            </div>
-          ))}
+          {Object.keys(info)
+            .sort((a, b) => parseInt(b) - parseInt(a))
+            .map((key) => (
+              <div key={key} className="flex items-center gap-2">
+                <Rate
+                  className="[&>input]:w-3 [&>input]:h-3"
+                  value={parseInt(key)}
+                  size="sm"
+                />
+                <Progress
+                  size="sm"
+                  value={(info[key] / count) * 100}
+                  color="warning"
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>
