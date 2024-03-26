@@ -6,13 +6,13 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 const LanguageKey = {
   en: "en",
   zh: "zh",
-  jp: "jp",
+  ja: "ja",
 } as const;
 
 const LanguageLabel = {
   [LanguageKey.en]: "English",
   [LanguageKey.zh]: "简体中文",
-  [LanguageKey.jp]: "日本語",
+  [LanguageKey.ja]: "日本語",
 };
 
 export const LanguageChanger = () => {

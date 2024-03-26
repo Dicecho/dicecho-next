@@ -1,32 +1,28 @@
 "use client";
 import { IModDto, IModListQuery } from "@dicecho/types";
 import useSWRInfinite from "swr/infinite";
-import {
-  ComponentProps,
-  FC,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ComponentProps, FC, useEffect } from "react";
 import Link from "next/link";
 import { api } from "@/utils/api";
 import { ScenarioCard } from "./ScenarioCard";
-import { useInView, IntersectionOptions } from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 
 import clsx from "clsx";
-import qs from "qs";
 import { useTranslation } from "next-i18next";
+import { omit } from "lodash";
 
 interface ScenarioListProps extends ComponentProps<"div"> {
   query?: Partial<IModListQuery>;
-  scenarios?: IModDto[];
+  renderHeader?: (state: {
+    isLoading: boolean;
+    total: number;
+  }) => React.ReactNode;
 }
 
 export const ScenarioList: FC<ScenarioListProps> = ({
-  scenarios: initialScenarios = [],
   query = {},
   className,
+  renderHeader,
   ...props
 }) => {
   const [t] = useTranslation(["common"]);
@@ -35,9 +31,15 @@ export const ScenarioList: FC<ScenarioListProps> = ({
   const { data, isLoading, setSize } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && !previousPageData) return null; // reached the end
-      return [`scenarios`, pageIndex + 1, query];
+      return [`scenarios`, pageIndex + 1, omit(query, "page")];
     },
-    ([_, page, query]) => api.module.list({ ...query, page })
+    ([_, page, query]) => api.module.list({ ...query, page }),
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateFirstPage: false,
+    }
   );
 
   const lastPage = data?.[data.length - 1];
@@ -51,20 +53,17 @@ export const ScenarioList: FC<ScenarioListProps> = ({
 
   return (
     <>
+      {renderHeader &&
+        renderHeader({ total: data?.[0].totalCount ?? 0, isLoading })}
       <div
         className={clsx("grid grid-cols-2 md:grid-cols-4 gap-8", className)}
         {...props}
       >
-        {initialScenarios.map((scenario) => (
-          <Link href={`/scenario/${scenario._id}`} passHref key={scenario._id}>
-            <ScenarioCard scenario={scenario} />
-          </Link>
-        ))}
         {data?.map((page) =>
           page.data.map((scenario) => (
             <Link
               href={`/scenario/${scenario._id}`}
-              passHref
+              // passHref
               key={scenario._id}
             >
               <ScenarioCard scenario={scenario} />

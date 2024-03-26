@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { ComponentProps, FC } from "react";
 import { Rate } from "@/components/ui/rate";
 import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
 
 interface RateInfoProps extends ComponentProps<"div"> {
   score: number;
@@ -14,10 +15,11 @@ export const RateInfo: FC<RateInfoProps> = ({
   count,
   info,
   className,
+  ref,
   ...props
 }) => {
   return (
-    <div className={clsx("card", className)} {...props}>
+    <Card className={clsx(className)} {...props}>
       <div className="flex w-full gap-4">
         <div className="flex flex-col items-center justify-center min-w-20">
           <div>
@@ -45,6 +47,6 @@ export const RateInfo: FC<RateInfoProps> = ({
             ))}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };

@@ -139,7 +139,7 @@ const LanguageCodesENMap = {
   [LanguageCodes.VI]: 'Vietnamese',
 }
 
-const LanguageCodesJPMap = {
+const LanguageCodesJAMap = {
   [LanguageCodes.AF]: 'アフリカーンス語',
   [LanguageCodes.SQ]: 'アルバニア語',
   [LanguageCodes.AR]: 'アラビア語',
@@ -189,5 +189,5 @@ const LanguageCodesJPMap = {
 export const LanguageCodeMap: { [lng: string]: Record<LanguageCodes, string> } = {
   'zh': LanguageCodesZHMAP,
   'en': LanguageCodesENMap,
-  'jp': LanguageCodesJPMap,
+  'ja': LanguageCodesJAMap,
 }

@@ -1,4 +1,4 @@
-import type { GetServerSideProps } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import { api } from "@/utils/api";
 import { IModListQuery, ModSortKey } from "@dicecho/types";
 import { useState } from "react";
@@ -14,12 +14,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import { omit } from "lodash";
+import qs from "qs";
 
-export const getServerSideProps: GetServerSideProps<{}> = async ({
+interface PageProps {
+  initialQuery: Partial<IModListQuery>;
+}
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  query,
   locale,
 }) => ({
   props: {
+    initialQuery: urlToQuery(qs.stringify(query)),
     ...(await serverSideTranslations(locale ?? "en", ["common", "scenario"])),
   },
 });
@@ -28,16 +35,16 @@ const DEFAULT_QUERY: Partial<IModListQuery> = {
   sort: { lastRateAt: -1 },
 };
 
-function queryToFilter(query: Partial<IModListQuery>): ScenarioFilterData {
+function queryToFormData(query: Partial<IModListQuery>): ScenarioFilterData {
   return {
     rule: query.filter?.moduleRule,
     language: query.languages?.[0],
-    sortKey: Object.keys(query.sort ?? { lastRateAt: -1 })[0] as ModSortKey,
-    sortOrder: Object.values(query.sort ?? { lastRateAt: -1 })[0],
+    sortKey: Object.keys(query.sort ?? { lastRateAt: "-1" })[0] as ModSortKey,
+    sortOrder: Object.values(query.sort ?? { lastRateAt: "-1" })[0],
   };
 }
 
-function filterToQuery(data: ScenarioFilterData): Partial<IModListQuery> {
+function formDataToQuery(data: ScenarioFilterData): Partial<IModListQuery> {
   const query: Partial<IModListQuery> = {};
   if (data.rule) {
     Object.assign(query, {
@@ -64,20 +71,28 @@ function filterToQuery(data: ScenarioFilterData): Partial<IModListQuery> {
   return query;
 }
 
-export default function Scenario() {
-  const [t, i18n] = useTranslation(["common", "scenario"]);
-  const { push } = useRouter();
-  const [query, setQuery] = useState<Partial<IModListQuery>>(DEFAULT_QUERY);
+function urlToQuery(searchQuery: string): Partial<IModListQuery> {
+  return {
+    ...DEFAULT_QUERY,
+    ...qs.parse(searchQuery),
+  };
+}
+
+function queryToUrl(query: Partial<IModListQuery>): string {
+  return qs.stringify(query);
+}
+
+const ScenarioPage: NextPage<PageProps> = ({ initialQuery }) => {
+  const [t] = useTranslation(["common", "scenario"]);
+  const router = useRouter();
+  const [query, setQuery] = useState<Partial<IModListQuery>>(initialQuery);
   const [searchText, setSearchText] = useState("");
 
-  const { data: initialScenarios, isLoading } = useSWR(
-    [`scenarios`, query],
-    ([_, query]) => api.module.list({ ...query })
-  );
+  const handleQueryChange = (newQuery: Partial<IModListQuery>) => {
+    const query = omit(newQuery, "page");
+    const newUrlQuery = queryToUrl(query);
+    router.replace({ query: newUrlQuery });
 
-  const handleQueryChange = (query: Partial<IModListQuery>) => {
-    // todo: save setting to localstorage
-    // todo: add query to url
     setQuery(query);
   };
 
@@ -90,7 +105,7 @@ export default function Scenario() {
 
   const handleRandom = () => {
     api.module.random().then((res) => {
-      push(`/scenario/${res._id}`);
+      router.push(`/scenario/${res._id}`);
     });
   };
 
@@ -109,24 +124,30 @@ export default function Scenario() {
               {t("search")}
             </Button>
           </div>
-          <div className="text-sm opacity-60 mt-2 flex items-center">
-            <Trans
-              i18nKey="search_result"
-              t={t}
-              values={{
-                count: initialScenarios?.totalCount ?? "",
-              }}
-              components={{
-                loading: isLoading ? (
-                  <span className="loading loading-spinner loading-xs mr-2" />
-                ) : (
-                  <></>
-                ),
-              }}
-            />
-          </div>
-          <div className="divider !mt-0" />
-          <ScenarioList query={query} />
+          <ScenarioList
+            renderHeader={(state) => (
+              <>
+                <div className="text-sm opacity-60 mt-2 flex items-center gap-2">
+                  <Trans
+                    i18nKey="search_result"
+                    t={t}
+                    values={{
+                      count: state.isLoading ? "" : state.total,
+                    }}
+                    components={{
+                      loading: state.isLoading ? (
+                        <span className="loading loading-spinner loading-xs" />
+                      ) : (
+                        <></>
+                      ),
+                    }}
+                  />
+                </div>
+                <div className="divider !mt-0" />
+              </>
+            )}
+            query={query}
+          />
         </div>
         <div className="hidden md:flex md:col-span-2 gap-4 flex-col">
           <Button className="capitalize">
@@ -145,8 +166,8 @@ export default function Scenario() {
 
             <CardContent>
               <ScenarioFilter
-                initialFilter={queryToFilter(query)}
-                onChange={(data) => handleQueryChange(filterToQuery(data))}
+                initialFilter={queryToFormData(query)}
+                onChange={(data) => handleQueryChange(formDataToQuery(data))}
               />
               <Button
                 className="w-full mt-4 capitalize"
@@ -160,4 +181,6 @@ export default function Scenario() {
       </div>
     </div>
   );
-}
+};
+
+export default ScenarioPage;

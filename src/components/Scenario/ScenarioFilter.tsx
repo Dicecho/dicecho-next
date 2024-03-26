@@ -1,15 +1,12 @@
 "use client";
 import React, { useEffect } from "react";
-import { IModListQuery, ModSortKey, SortOrder } from "@dicecho/types";
+import { ModSortKey, SortOrder } from "@dicecho/types";
 import { LanguageCodes, LanguageCodeMap } from "@/utils/language";
 import { api } from "@/utils/api";
-import clsx from "clsx";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 import { ArrowUpNarrowWide, ArrowDownNarrowWide } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "next-i18next";
-import { Input } from "@/components/ui/input";
-import { Toggle } from "@/components/ui/toggle";
 
 import {
   Select,
@@ -64,7 +61,7 @@ export const ModSortKeyMap: { [lng: string]: Record<ModSortKey, string> } = {
     [ModSortKey.CREATED_AT]: "created at",
     [ModSortKey.UPDATED_AT]: "updated at",
   },
-  jp: {
+  ja: {
     [ModSortKey.RATE_AVG]: "平均評価",
     [ModSortKey.RATE_COUNT]: "評価数",
     [ModSortKey.RELEASE_DATE]: "発売日",
@@ -79,7 +76,7 @@ const formSchema = z.object({
   rule: z.string().optional(),
   language: z.string().optional(),
   sortKey: z.enum(SortKeys).optional(),
-  sortOrder: z.number().optional(),
+  sortOrder: z.string().optional(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
@@ -94,12 +91,12 @@ export function ScenarioFilter({
   onChange = () => {},
 }: ScenarioFilterProps) {
   const [t, i18n] = useTranslation(["scenario", "common"]);
-  const { data: config } = useSWR(["scenario", "config"], api.module.config);
+  const { data: config } = useSWRImmutable(["scenario", "config"], api.module.config);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       sortKey: ModSortKey.LAST_RATE_AT,
-      sortOrder: SortOrder.DESC,
+      sortOrder: SortOrder.DESC.toString(),
       ...initialFilter,
     },
   });
@@ -194,13 +191,13 @@ export function ScenarioFilter({
                 type="button"
                 onClick={() => {
                   field.onChange(
-                    field.value === SortOrder.DESC
+                    field.value === SortOrder.DESC.toString()
                       ? SortOrder.ASC
                       : SortOrder.DESC
                   );
                 }}
               >
-                {field.value === SortOrder.DESC ? (
+                {field.value === SortOrder.DESC.toString() ? (
                   <ArrowDownNarrowWide size={16} />
                 ) : (
                   <ArrowUpNarrowWide size={16} />
@@ -218,7 +215,7 @@ export function ScenarioFilter({
               rule: "",
               language: "",
               sortKey: ModSortKey.LAST_RATE_AT,
-              sortOrder: SortOrder.DESC,
+              sortOrder: SortOrder.DESC.toString(),
             })
           }
         >

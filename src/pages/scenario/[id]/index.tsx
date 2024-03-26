@@ -5,7 +5,8 @@ import type {
   Metadata,
   NextPage,
 } from "next";
-// import initTranslations from '@/app/i18n';
+import Image from 'next/image'
+import { RandomAvatar } from "react-random-avatars";
 import { api } from "@/utils/api";
 import { IModDto } from "@dicecho/types";
 
@@ -52,7 +53,7 @@ const InfoItem: FC<
   PropsWithChildren<ComponentProps<"div"> & { title: string }>
 > = ({ title, className, children, ...props }) => {
   return (
-    <div className={clsx("flex", className)} {...props}>
+    <div className={clsx("flex gap-2", className)} {...props}>
       <div>{title}</div>
       <div className="flex-1">{children}</div>
     </div>
@@ -99,14 +100,20 @@ const ScenarioDetailPage: NextPage<PageProps> = ({ scenario }) => {
         />
 
         <InfoItem title={t("author")}>
-          <div className="avatar">
-            <img
-              className="w-4 h-4"
-              src={scenario.author.avatarUrl}
-              alt={scenario.author.nickName}
-            />
+          <div className="flex items-center">
+            {scenario.author.avatarUrl ? (
+              <Image
+                className="w-4 h-4 flex-1"
+                width={16}
+                height={16}
+                src={scenario.author.avatarUrl}
+                alt={scenario.author.nickName}
+              />
+            ) : (
+              <RandomAvatar name={scenario.author.nickName} size={16} />
+            )}
+            <span className="flex-1">{scenario.author.nickName}</span>
           </div>
-          {scenario.author.nickName}
         </InfoItem>
       </div>
     </div>

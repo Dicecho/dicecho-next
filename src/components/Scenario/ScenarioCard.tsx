@@ -1,5 +1,4 @@
 import React from "react";
-import Img from "next/image";
 import { IModDto } from "@dicecho/types";
 import { RandomAvatar } from "react-random-avatars";
 import { Rate } from "@/components/ui/rate";
