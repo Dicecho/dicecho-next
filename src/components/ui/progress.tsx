@@ -7,9 +7,14 @@ import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
 const progressVariants = cva(
-  "relative w-full overflow-hidden rounded-full bg-secondary",
+  "relative w-full overflow-hidden rounded-full bg-opacity-20",
   {
     variants: {
+      color: {
+        primary: "bg-primary",
+        destructive: "bg-destructive",
+        warning: "bg-warning",
+      },
       size: {
         default: "h-4",
         large: "h-6",
@@ -17,6 +22,7 @@ const progressVariants = cva(
       },
     },
     defaultVariants: {
+      color: 'primary',
       size: "default",
     },
   }
@@ -43,7 +49,7 @@ const Progress = React.forwardRef<
 >(({ className, value, color, size, ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}
-    className={cn(progressVariants({ size, className }))}
+    className={cn(progressVariants({ color, size, className }))}
     {...props}
   >
     <ProgressPrimitive.Indicator

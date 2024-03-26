@@ -113,14 +113,15 @@ const ScenarioPage: NextPage<PageProps> = ({ initialQuery }) => {
     <div className="container mx-auto pt-4">
       <div className="grid grid-cols-6 gap-8">
         <div className="col-span-6 md:col-span-4">
-          <div className="flex w-full items-center space-x-2">
+          <div className="join flex w-full items-center">
             <Input
+              className="join-item"
               placeholder={t("scenario_search_placeholder", { ns: "scenario" })}
               value={searchText}
               onChange={(e) => setSearchText(e.currentTarget.value)}
               onEnter={handleSearch}
             />
-            <Button className="capitalize" onClick={handleSearch}>
+            <Button className="capitalize join-item" onClick={handleSearch}>
               {t("search")}
             </Button>
           </div>

@@ -9,6 +9,9 @@ const config = {
   ],
   prefix: "",
   theme: {
+    borderWidth: {
+      DEFAULT: 'var(--border-width)',
+    },
     container: {
       center: true,
       padding: "2rem",

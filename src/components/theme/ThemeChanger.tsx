@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import * as SelectPrimitive from "@radix-ui/react-select";
 
-const THEMES = ["light", "dark"];
+const THEMES = ["light", "dark", 'sakura', 'dicecho'];
 
 export const ThemeChanger = () => {
   const { theme, setTheme } = useTheme();

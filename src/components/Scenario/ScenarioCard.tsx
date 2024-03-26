@@ -15,7 +15,7 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
 
   return (
     <div className="card group">
-      <div className="flex aspect-[3/4] relative rounded-xl overflow-hidden mb-2">
+      <div className="flex aspect-[3/4] relative rounded-lg overflow-hidden mb-2">
         <div
           className={clsx(
             "absolute w-full h-full bg-cover bg-center bg-no-repeat transition-all group-hover:scale-125 group-hover:brightness-75"
@@ -27,7 +27,7 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
 
       <div className="flex items-center">
         <div className="mr-2">
-          <div className="w-4 rounded-xl overflow-hidden">
+          <div className="w-4 rounded-lg overflow-hidden">
             {scenario.author.avatarUrl ? (
               <Image
                 className="w-4 h-4"
@@ -54,7 +54,7 @@ export function ScenarioCard({ scenario }: ScenarioCardProps) {
             <Rate value={scenario.rateAvg} size="sm" allowHalf readOnly />
 
             <div className="ml-auto">
-              <span className="text-base text-orange-400 mr-1">
+              <span className="text-base text-warning mr-1">
                 {scenario.rateAvg}
               </span>
               <span className="text-sm opacity-60">({scenario.rateCount})</span>
