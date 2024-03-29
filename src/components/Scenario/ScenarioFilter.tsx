@@ -91,7 +91,10 @@ export function ScenarioFilter({
   onChange = () => {},
 }: ScenarioFilterProps) {
   const [t, i18n] = useTranslation(["scenario", "common"]);
-  const { data: config } = useSWRImmutable(["scenario", "config"], api.module.config);
+  const { data: config } = useSWRImmutable(
+    ["scenario", "config"],
+    api.module.config
+  );
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -149,8 +152,12 @@ export function ScenarioFilter({
                 <SelectContent>
                   {config?.languages.map((language) => (
                     <SelectItem key={language._id} value={language._id}>
-                      {LanguageCodeMap[i18n.language][language._id as LanguageCodes]}(
-                      {language.count})
+                      {
+                        LanguageCodeMap[i18n.language][
+                          language._id as LanguageCodes
+                        ]
+                      }
+                      ({language.count})
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -208,7 +215,7 @@ export function ScenarioFilter({
         </div>
         <Button
           className="w-full capitalize"
-          variant="destructive"
+          color="destructive"
           type="button"
           onClick={() =>
             form.reset({

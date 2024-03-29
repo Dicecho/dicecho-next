@@ -6,7 +6,17 @@
   "contributors": "contributors",
   "tags": "tags",
   "rule": "rule",
+  "languages": "languages",
   "publish_at": "publish at {{date}}",
+  "dicecho_rating": "dicecho rating",
+  "no_rating": "no rating",
+  "too_few_ratings": "too few ratings",
+  "ratings": "{{count}} ratings",
+  "marks": "{{count}} marks",
+  "rate": "rate",
+  "mark": "mark",
+  "collect": "collect",
+  "origin": "origin",
   "scenario_search_placeholder": "input scenario name / description / author etc for search",
   "no_review_yet": "No review yet"
 }

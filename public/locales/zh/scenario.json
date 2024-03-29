@@ -6,7 +6,17 @@
   "contributors": "条目贡献者",
   "tags": "标签",
   "rule": "应用规则",
+  "languages": "语言",
   "publish_at": "发布于 {{date}}",
+  "dicecho_rating": "骰声回响评分",
+  "no_rating": "暂无评分",
+  "too_few_ratings": "评价过少",
+  "ratings": "{{count}} 人评价",
+  "marks": "{{count}} 人想玩",
+  "rate": "玩过",
+  "mark": "想玩",
+  "collect": "收藏",
+  "origin": "源站",
   "scenario_search_placeholder": "输入名称 / 介绍 / 作者来搜索模组",
   "no_review_yet": "暂无评分"
 }

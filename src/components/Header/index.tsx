@@ -25,9 +25,9 @@ export const Header: FC<HeaderProps> = (props) => {
   return (
     <div
       {...props}
-      className={clsx("sticky top-0 left-0 right-0 z-10 shadow-xl")}
+      className={clsx("sticky top-0 left-0 right-0 z-10 shadow-xl bg-card")}
     >
-      <div className="container mx-auto bg-card">
+      <div className="container mx-auto">
         <div className="flex items-center min-h-16">
           <div className="w-1/2 justify-start">
             <Link href="/" passHref>
