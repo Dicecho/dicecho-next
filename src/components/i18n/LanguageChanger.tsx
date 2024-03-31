@@ -25,7 +25,7 @@ export const LanguageChanger = () => {
   return (
     <SelectPrimitive.Root onValueChange={(value) => changeLanguage(value)}>
       <SelectPrimitive.Trigger asChild>
-        <Globe className="cursor-pointer" />
+        <Globe className="cursor-pointer" size={24} />
       </SelectPrimitive.Trigger>
 
       <SelectContent position="popper" side="bottom" align="end">

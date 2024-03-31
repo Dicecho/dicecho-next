@@ -193,18 +193,17 @@ export function ScenarioFilter({
             name="sortOrder"
             render={({ field }) => (
               <Button
-                variant="outline"
-                className="join-item px-2"
+                className="join-item px-2 border-box"
                 type="button"
                 onClick={() => {
                   field.onChange(
-                    field.value === SortOrder.DESC.toString()
+                    field.value?.toString() === SortOrder.DESC.toString()
                       ? SortOrder.ASC
                       : SortOrder.DESC
                   );
                 }}
               >
-                {field.value === SortOrder.DESC.toString() ? (
+                {field.value?.toString() === SortOrder.DESC.toString() ? (
                   <ArrowDownNarrowWide size={16} />
                 ) : (
                   <ArrowUpNarrowWide size={16} />
@@ -217,6 +216,7 @@ export function ScenarioFilter({
           className="w-full capitalize"
           color="destructive"
           type="button"
+          variant='outline'
           onClick={() =>
             form.reset({
               rule: "",

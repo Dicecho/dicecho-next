@@ -25,7 +25,7 @@ export const Header: FC<HeaderProps> = (props) => {
   return (
     <div
       {...props}
-      className={clsx("sticky top-0 left-0 right-0 z-10 shadow-xl bg-card")}
+      className={clsx("sticky top-0 left-0 right-0 z-10 shadow-xl bg-base-200")}
     >
       <div className="container mx-auto">
         <div className="flex items-center min-h-16">
@@ -41,7 +41,10 @@ export const Header: FC<HeaderProps> = (props) => {
                 <NavigationMenuItem>
                   <Link href="/scenario" legacyBehavior passHref>
                     <NavigationMenuLink
-                      className={clsx(navigationMenuTriggerStyle(), 'capitalize')}
+                      className={clsx(
+                        navigationMenuTriggerStyle(),
+                        "capitalize"
+                      )}
                     >
                       <BookOpenText size={16} />
                       {t("scenario")}
@@ -51,7 +54,10 @@ export const Header: FC<HeaderProps> = (props) => {
                 <NavigationMenuItem>
                   <Link href="/forum" legacyBehavior passHref>
                     <NavigationMenuLink
-                      className={clsx(navigationMenuTriggerStyle(), 'capitalize')}
+                      className={clsx(
+                        navigationMenuTriggerStyle(),
+                        "capitalize"
+                      )}
                     >
                       <MessageCircleMore size={16} />
 
@@ -62,7 +68,10 @@ export const Header: FC<HeaderProps> = (props) => {
                 <NavigationMenuItem>
                   <Link href="/replay" legacyBehavior passHref>
                     <NavigationMenuLink
-                      className={clsx(navigationMenuTriggerStyle(), 'capitalize')}
+                      className={clsx(
+                        navigationMenuTriggerStyle(),
+                        "capitalize"
+                      )}
                     >
                       <Videotape size={16} />
 
@@ -80,7 +89,9 @@ export const Header: FC<HeaderProps> = (props) => {
           <div className="w-1/2 justify-end flex gap-4 capitalize items-center">
             <LanguageChanger />
             <ThemeChanger />
-            <Button size="sm">{t("sign_in")}</Button>
+            <Button size="sm" color="primary">
+              {t("sign_in")}
+            </Button>
           </div>
         </div>
       </div>

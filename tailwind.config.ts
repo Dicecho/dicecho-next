@@ -11,6 +11,7 @@ const config = {
   theme: {
     borderWidth: {
       DEFAULT: 'var(--border-width)',
+      box: 'var(--border-width-box)',
     },
     container: {
       center: true,
@@ -26,6 +27,9 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "base-100": "hsl(var(--base-100))",
+        "base-200": "hsl(var(--base-200))",
+        "base-300": "hsl(var(--base-300))",
         primary: {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           foreground: "hsl(var(--primary-foreground))",
@@ -34,35 +38,34 @@ const config = {
           DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted) / <alpha-value>)",
-          foreground: "hsl(var(--muted-foreground))",
-        },
         accent: {
           DEFAULT: "hsl(var(--accent) / <alpha-value>)",
           foreground: "hsl(var(--accent-foreground))",
         },
+        natural: {
+          DEFAULT: "hsl(var(--natural) / <alpha-value>)",
+          foreground: "hsl(var(--natural-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success) / <alpha-value>)",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
         warning: {
           DEFAULT: "hsl(var(--warning) / <alpha-value>)",
           foreground: "hsl(var(--warning-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover) / <alpha-value>)",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card) / <alpha-value>)",
-          foreground: "hsl(var(--card-foreground))",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        box: "var(--radius-box)",
+        btn: "var(--radius-btn)",
+        badge: "var(--radius-badge)",
       },
       keyframes: {
         "accordion-down": {

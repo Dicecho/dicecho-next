@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { api } from "@/utils/api";
 import { IModListQuery, ModSortKey } from "@dicecho/types";
 import { useState } from "react";
-import { Upload, Plus } from "lucide-react";
+import { Upload, Plus, Search } from "lucide-react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { ScenarioList } from "@/components/Scenario/ScenarioList";
 import { useTranslation, Trans } from "next-i18next";
@@ -121,7 +121,8 @@ const ScenarioPage: NextPage<PageProps> = ({ initialQuery }) => {
               onChange={(e) => setSearchText(e.currentTarget.value)}
               onEnter={handleSearch}
             />
-            <Button className="capitalize join-item" onClick={handleSearch}>
+            <Button className="capitalize join-item" color='primary' onClick={handleSearch}>
+              <Search size={16} />
               {t("search")}
             </Button>
           </div>
@@ -151,11 +152,11 @@ const ScenarioPage: NextPage<PageProps> = ({ initialQuery }) => {
           />
         </div>
         <div className="hidden md:flex md:col-span-2 gap-4 flex-col">
-          <Button className="capitalize">
+          <Button className="capitalize" variant='outline' color='primary'>
             <Upload size={16} />
             {t("scenario_publish")}
           </Button>
-          <Button className="capitalize">
+          <Button className="capitalize" variant='outline' color='primary'>
             <Plus size={16} />
             {t("commit_scenario_page")}
           </Button>
@@ -173,6 +174,7 @@ const ScenarioPage: NextPage<PageProps> = ({ initialQuery }) => {
               <Button
                 className="w-full mt-4 capitalize"
                 onClick={() => handleRandom()}
+                variant='outline'
               >
                 {t("random_scenario")}
               </Button>

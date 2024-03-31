@@ -163,19 +163,19 @@ const ScenarioDetailPage: NextPage<PageProps> = ({ scenario }) => {
 
   const actions = (
     <>
-      <Button>
+      <Button variant='outline' color='primary'>
         <StarIcon size={16} />
         {t("rate")}
       </Button>
-      <Button>
+      <Button variant='outline' color='primary'>
         <HeartIcon size={16} />
         {t("mark")}
       </Button>
-      <Button>
+      <Button variant='outline' color='primary'>
         <BookmarkPlusIcon size={16} />
         {t("collect")}
       </Button>
-      <Button className="ml-auto">
+      <Button className="ml-auto" color='primary'>
         <LinkIcon size={16} />
         {t("origin")}
       </Button>
@@ -188,7 +188,7 @@ const ScenarioDetailPage: NextPage<PageProps> = ({ scenario }) => {
         className="w-full h-[280px] bg-cover bg-center bg-no-repeat brightness-75 relative z-0 md:hidden"
         style={{ backgroundImage: `url(${scenario.coverUrl})` }}
       />
-      <Card className="p-4 mt-[-16px] bg-card relative rounded-t-2xl md:mt-10 md:rounded md:flex">
+      <Card className="p-4 mt-[-16px] relative rounded-t-2xl md:mt-10 md:rounded md:flex">
         <div
           className="hidden md:block w-32 aspect-[3/4] bg-cover bg-center shadow-2xl -mt-[40px] mr-[24px]"
           style={{ backgroundImage: `url(${scenario.coverUrl})` }}
